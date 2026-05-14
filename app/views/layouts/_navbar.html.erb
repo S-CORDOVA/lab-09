@@ -2,11 +2,25 @@
   <div class="container">
     <%= link_to "VetClinic", root_path, class: "navbar-brand" %>
 
-    <div>
-      <%= link_to "Owners", owners_path, class: "btn btn-outline-light btn-sm" %>
-      <%= link_to "Pets", pets_path, class: "btn btn-outline-light btn-sm" %>
-      <%= link_to "Vets", vets_path, class: "btn btn-outline-light btn-sm" %>
-      <%= link_to "Appointments", appointments_path, class: "btn btn-outline-light btn-sm" %>
+    <div class="d-flex gap-2 align-items-center">
+      <% if user_signed_in? %>
+        <%= link_to "Owners", owners_path, class: "btn btn-outline-light btn-sm" %>
+        <%= link_to "Pets", pets_path, class: "btn btn-outline-light btn-sm" %>
+        <%= link_to "Vets", vets_path, class: "btn btn-outline-light btn-sm" %>
+        <%= link_to "Appointments", appointments_path, class: "btn btn-outline-light btn-sm" %>
+
+        <span class="text-light ms-3">
+          <%= current_user.first_name %> <%= current_user.last_name %>
+        </span>
+
+        <%= button_to "Sign out",
+            destroy_user_session_path,
+            method: :delete,
+            class: "btn btn-outline-warning btn-sm" %>
+      <% else %>
+        <%= link_to "Sign in", new_user_session_path, class: "btn btn-outline-light btn-sm" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+      <% end %>
     </div>
   </div>
 </nav>

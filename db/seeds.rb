@@ -1,3 +1,4 @@
+User.destroy_all
 Treatment.destroy_all
 Appointment.destroy_all
 Pet.destroy_all
@@ -222,4 +223,31 @@ Treatment.create!(
     </ul>
   ",
   administered_at: "2026-12-24 20:00:00"
+)
+
+admin_user = User.create!(
+  first_name: "Admin",
+  last_name: "User",
+  email: "admin@example.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: :admin
+)
+
+vet_user = User.create!(
+  first_name: "Vet",
+  last_name: "User",
+  email: "vet@example.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: :vet
+)
+
+owner_user = User.create!(
+  first_name: "Owner",
+  last_name: "User",
+  email: "owner@example.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: :owner
 )
