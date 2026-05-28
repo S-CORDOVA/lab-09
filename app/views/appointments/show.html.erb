@@ -16,7 +16,9 @@
 
 <h2>Treatments</h2>
 
-<%= link_to "New Treatment", new_appointment_treatment_path(@appointment), class: "btn btn-primary mb-3" %>
+<% if policy(Treatment.new(appointment: @appointment)).new? %>
+  <%= link_to "New Treatment", new_appointment_treatment_path(@appointment), class: "btn btn-primary mb-3" %>
+<% end %>
 
 <ul>
   <% @treatments.each do |treatment| %>
@@ -34,15 +36,19 @@
       </div>
 
       <div class="d-flex gap-2 mt-2">
-        <%= link_to "Edit",
-            edit_appointment_treatment_path(@appointment, treatment),
-            class: "btn btn-sm btn-secondary" %>
+        <% if policy(treatment).edit? %>
+          <%= link_to "Edit",
+              edit_appointment_treatment_path(@appointment, treatment),
+              class: "btn btn-sm btn-secondary" %>
+        <% end %>
 
-        <%= button_to "Delete",
-            appointment_treatment_path(@appointment, treatment),
-            method: :delete,
-            form: { data: { turbo_confirm: "Are you sure?" } },
-            class: "btn btn-sm btn-danger" %>
+        <% if policy(treatment).destroy? %>
+          <%= button_to "Delete",
+              appointment_treatment_path(@appointment, treatment),
+              method: :delete,
+              form: { data: { turbo_confirm: "Are you sure?" } },
+              class: "btn btn-sm btn-danger" %>
+        <% end %>
       </div>
     </li>
   <% end %>
@@ -50,6 +56,16 @@
 
 <div class="d-flex gap-2 mt-3">
   <%= link_to "Back", appointments_path, class: "btn btn-outline-secondary" %>
-  <%= link_to "Edit Appointment", edit_appointment_path(@appointment), class: "btn btn-secondary" %>
-  <%= button_to "Delete Appointment", @appointment, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-danger" %>
+
+  <% if policy(@appointment).edit? %>
+    <%= link_to "Edit Appointment", edit_appointment_path(@appointment), class: "btn btn-secondary" %>
+  <% end %>
+
+  <% if policy(@appointment).destroy? %>
+    <%= button_to "Delete Appointment",
+        @appointment,
+        method: :delete,
+        form: { data: { turbo_confirm: "Are you sure?" } },
+        class: "btn btn-danger" %>
+  <% end %>
 </div>

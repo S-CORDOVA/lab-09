@@ -1,8 +1,10 @@
 class User < ApplicationRecord
+  has_one :owner
+  has_one :vet
+
   enum :role, [:owner, :vet, :admin]
 
   devise :database_authenticatable,
-         :registerable,
          :recoverable,
          :rememberable,
          :validatable

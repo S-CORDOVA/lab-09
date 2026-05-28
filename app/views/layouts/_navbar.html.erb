@@ -4,10 +4,23 @@
 
     <div class="d-flex gap-2 align-items-center">
       <% if user_signed_in? %>
-        <%= link_to "Owners", owners_path, class: "btn btn-outline-light btn-sm" %>
-        <%= link_to "Pets", pets_path, class: "btn btn-outline-light btn-sm" %>
-        <%= link_to "Vets", vets_path, class: "btn btn-outline-light btn-sm" %>
-        <%= link_to "Appointments", appointments_path, class: "btn btn-outline-light btn-sm" %>
+        <% if current_user.owner? && current_user.owner.present? %>
+          <%= link_to "My account", owner_path(current_user.owner), class: "btn btn-outline-light btn-sm" %>
+        <% elsif policy(Owner).index? %>
+          <%= link_to "Owners", owners_path, class: "btn btn-outline-light btn-sm" %>
+        <% end %>
+
+        <% if policy(Pet).index? %>
+          <%= link_to "Pets", pets_path, class: "btn btn-outline-light btn-sm" %>
+        <% end %>
+
+        <% if policy(Vet).index? %>
+          <%= link_to "Vets", vets_path, class: "btn btn-outline-light btn-sm" %>
+        <% end %>
+
+        <% if policy(Appointment).index? %>
+          <%= link_to "Appointments", appointments_path, class: "btn btn-outline-light btn-sm" %>
+        <% end %>
 
         <span class="text-light ms-3">
           <%= current_user.first_name %> <%= current_user.last_name %>
@@ -19,7 +32,6 @@
             class: "btn btn-outline-warning btn-sm" %>
       <% else %>
         <%= link_to "Sign in", new_user_session_path, class: "btn btn-outline-light btn-sm" %>
-        <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
       <% end %>
     </div>
   </div>

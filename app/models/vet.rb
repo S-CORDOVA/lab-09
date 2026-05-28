@@ -1,4 +1,6 @@
 class Vet < ApplicationRecord
+  belongs_to :user, optional: true
+
   has_many :appointments
 
   before_validation :normalize_email

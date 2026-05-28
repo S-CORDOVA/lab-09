@@ -1,6 +1,8 @@
 <h1>Owners</h1>
 
-<%= link_to "New Owner", new_owner_path, class: "btn btn-primary mb-3" %>
+<% if policy(Owner).new? %>
+  <%= link_to "New Owner", new_owner_path, class: "btn btn-primary mb-3" %>
+<% end %>
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -19,8 +21,17 @@
         <td><%= owner.email %></td>
         <td><%= owner.phone %></td>
         <td>
-          <%= link_to "Edit", edit_owner_path(owner), class: "btn btn-sm btn-secondary" %>
-          <%= button_to "Delete", owner_path(owner), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-sm btn-danger" %>
+          <% if policy(owner).edit? %>
+            <%= link_to "Edit", edit_owner_path(owner), class: "btn btn-sm btn-secondary" %>
+          <% end %>
+
+          <% if policy(owner).destroy? %>
+            <%= button_to "Delete",
+                owner_path(owner),
+                method: :delete,
+                form: { data: { turbo_confirm: "Are you sure?" } },
+                class: "btn btn-sm btn-danger" %>
+          <% end %>
         </td>
       </tr>
     <% end %>

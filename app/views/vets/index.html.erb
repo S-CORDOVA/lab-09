@@ -1,6 +1,8 @@
 <h1>Vets</h1>
 
-<%= link_to "New Vet", new_vet_path, class: "btn btn-primary mb-3" %>
+<% if policy(Vet).new? %>
+  <%= link_to "New Vet", new_vet_path, class: "btn btn-primary mb-3" %>
+<% end %>
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -19,8 +21,17 @@
         <td><%= vet.email %></td>
         <td><%= vet.specialization %></td>
         <td>
-          <%= link_to "Edit", edit_vet_path(vet), class: "btn btn-sm btn-secondary" %>
-          <%= button_to "Delete", vet_path(vet), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-sm btn-danger" %>
+          <% if policy(vet).edit? %>
+            <%= link_to "Edit", edit_vet_path(vet), class: "btn btn-sm btn-secondary" %>
+          <% end %>
+
+          <% if policy(vet).destroy? %>
+            <%= button_to "Delete",
+                vet_path(vet),
+                method: :delete,
+                form: { data: { turbo_confirm: "Are you sure?" } },
+                class: "btn btn-sm btn-danger" %>
+          <% end %>
         </td>
       </tr>
     <% end %>

@@ -2,18 +2,21 @@ class VetsController < ApplicationController
   before_action :set_vet, only: [:show, :edit, :update, :destroy]
 
   def index
-    @vets = Vet.all
+    @vets = policy_scope(Vet)
   end
 
   def show
+    authorize @vet
   end
 
   def new
     @vet = Vet.new
+    authorize @vet
   end
 
   def create
     @vet = Vet.new(vet_params)
+    authorize @vet
 
     if @vet.save
       redirect_to @vet, notice: "Vet created"
@@ -23,9 +26,12 @@ class VetsController < ApplicationController
   end
 
   def edit
+    authorize @vet
   end
 
   def update
+    authorize @vet
+
     if @vet.update(vet_params)
       redirect_to @vet, notice: "Vet updated"
     else
@@ -34,6 +40,8 @@ class VetsController < ApplicationController
   end
 
   def destroy
+    authorize @vet
+
     @vet.destroy
     redirect_to vets_path, notice: "Vet deleted"
   end
@@ -45,6 +53,6 @@ class VetsController < ApplicationController
   end
 
   def vet_params
-    params.require(:vet).permit(:first_name, :last_name, :email, :phone, :specialization)
+    params.require(:vet).permit(policy(@vet || Vet).permitted_attributes)
   end
 end

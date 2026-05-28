@@ -14,7 +14,22 @@
   <% end %>
 </ul>
 
-<%= link_to "Back", owners_path, class: "btn btn-secondary" %>
+<div class="d-flex gap-2 mt-3">
+  <% if policy(Owner).index? %>
+    <%= link_to "Back", owners_path, class: "btn btn-secondary" %>
+  <% else %>
+    <%= link_to "Back", root_path, class: "btn btn-secondary" %>
+  <% end %>
 
-<%= link_to "Edit", edit_owner_path(@owner), class: "btn btn-secondary" %>
-<%= button_to "Delete", @owner, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, class: "btn btn-danger" %>
+  <% if policy(@owner).edit? %>
+    <%= link_to "Edit", edit_owner_path(@owner), class: "btn btn-secondary" %>
+  <% end %>
+
+  <% if policy(@owner).destroy? %>
+    <%= button_to "Delete",
+        @owner,
+        method: :delete,
+        form: { data: { turbo_confirm: "Are you sure?" } },
+        class: "btn btn-danger" %>
+  <% end %>
+</div>
